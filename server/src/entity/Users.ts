@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, BaseEntity } from "typeorm"
 import { Post } from './Posts'
 import { Comment } from "./Comments"
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number
 
@@ -17,14 +17,14 @@ export class User {
     email: string
 
     @CreateDateColumn() 
-    createdAt: Date
+    createdAt?: Date
 
     @CreateDateColumn() 
-    updatedAt: Date
+    updatedAt?: Date
 
     @OneToMany(() => Post, (post) => post.users)
-    post: Post[]
+    post?: Post[]
 
     @OneToMany(() => Comment, (comment) => comment.users)
-    comment: Comment[]
+    comment?: Comment[]
 }
