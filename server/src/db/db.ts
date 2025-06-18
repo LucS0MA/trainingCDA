@@ -1,18 +1,12 @@
+import { Comment } from "../entity/Comments"
+import { Post } from "../entity/Posts"
+import { User } from "../entity/Users"
 import { DataSource } from "typeorm"
 
-const AppDataSource = new DataSource({
-    type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "test",
-    password: "test",
-    database: "test",
+export  const dataSourceBlogDB = new DataSource({
+    type: "sqlite",
+    database: "blog_db.sqlite",
+    entities: [User, Post, Comment],
+    synchronize: true,
+    logging: ["error", "query"],
 })
-
-AppDataSource.initialize()
-    .then(() => {
-        console.log("Data Source has been initialized!")
-    })
-    .catch((err) => {
-        console.error("Error during Data Source initialization", err)
-    })
