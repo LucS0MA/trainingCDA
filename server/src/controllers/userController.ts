@@ -16,19 +16,23 @@ export const browse = async (_req: Request, res: Response) => {
 export const getById = async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ where: { id: parseInt(req.params.id) } });
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    }
     res.status(200).json(user);
   } catch (error) {
     console.error("Error fetching user:", error);
-    res.status(404).json({ message: "no user found" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
 export const remove = async (req: Request, res: Response) => {
   try {
-    const userToDelete = await User.delete(req.params.id);
-    res.status(200).json({ message: `${userToDelete} deleted` });
+    await User.delete(req.params.id);
+    res.status(200).json({ message: `User deleted` });
   } catch (error) {
-    res.status(404).json({ message: "no user found" });
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -36,13 +40,14 @@ export const register = async (req: Request, res: Response) => {
   try {
     console.log("request body", req.body);
     const newUser = new User();
-    (newUser.username = req.body.username),
-      (newUser.email = req.body.email),
-      (newUser.password = await argon2.hash(req.body.password)),
-      newUser.save();
-    res.status(200).json({ message: `User ${newUser.username} created` });
+    newUser.username = req.body.username;
+    newUser.email = req.body.email;
+    newUser.password = await argon2.hash(req.body.password);
+    await newUser.save(); 
+    res.status(201).json({ message: `User ${newUser.username} created` });
   } catch (error) {
-    res.status(404).json({ message: "no user created" });
+    console.error("Error creating user:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -62,14 +67,25 @@ export const login = async (req: Request, res: Response) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
       });
-      res
-        .status(200)
-        .json({ message: `User ${user.email} & ${token} connected` });
+      res.status(200).json({ message: `User ${user.email} connected` }); 
     } else {
-      res.status(404).json({ message: `wrong login informations` });
+      res.status(401).json({ message: `Invalid credentials` });
     }
   } catch (error) {
-    res.status(404).json({ message: `wrong login informations` });
+    console.error("Error during login:", error);
+    res.status(401).json({ message: `Invalid credentials` }); 
+  }
+};
+
+export const logout = async (_req: Request, res: Response) => {
+  try {
+    res
+      .clearCookie("access_token")
+      .status(200)
+      .json({ message: "Successfully logged out" });
+  } catch (error) {
+    console.error("Error during logout:", error);
+    res.status(500).json({ message: `Internal server error` });
   }
 };
 
@@ -77,9 +93,10 @@ export const update = async (req: Request, res: Response) => {
   try {
     const user = await User.findOneByOrFail({ id: parseInt(req.params.id) });
     const userToUpdate = Object.assign(user, req.body);
-    userToUpdate.save();
+    await userToUpdate.save();
     res.status(200).json({ message: `User updated` });
   } catch (error) {
-    res.status(404).json({ message: "no user updated" });
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };

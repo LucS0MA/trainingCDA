@@ -1,5 +1,6 @@
 import express from "express";
 import { validateData } from "../middleware/validationMiddleware";
+import { auth } from "../middleware/verificationJWTlogin";
 import { userRegistrationSchema, userLoginSchema } from "../schema/userSchema";
 import * as userController from "../controllers/userController";
 
@@ -8,7 +9,7 @@ const userRouter = express.Router();
 userRouter.get("/users", userController.browse);
 userRouter.get("/users/:id", userController.getById);
 userRouter.delete("/users/:id", userController.remove);
-userRouter.put("/users/:id", userController.update);
+userRouter.put("/users/:id", auth, userController.update);
 userRouter.post(
   "/register",
   validateData(userRegistrationSchema),
