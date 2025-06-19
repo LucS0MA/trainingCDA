@@ -27,37 +27,39 @@ router.get("/users/:id", async (req: Request, res: Response) => {
 router.delete("/users/:id", async (req: Request, res: Response) => {
     try {
         const userToDelete = await User.delete(req.params.id)
-        res.status(204).json({message: `${userToDelete} deleted`});
+        res.status(200).json({message: `${userToDelete} deleted`});
     }
         catch (error) {
             res.status(404).json({message: "no user found"});
         }
 })
 
-// router.post("/users", (req: Request, res: Response) => {
-//     const newUser: User = {
-//         id: users.length + 1,
-//         username: req.body.username,
-//         password: req.body.password,
-//     }
-//     users.push(newUser)
-//     res.status(204).json({message: "user created"})
-// })
+router.post("/users", async (req: Request, res: Response) => {
+    try {
+    console.log("request body", req.body);
+    const newUser =  new User;
+    newUser.username = req.body.username,
+    newUser.email = req.body.email,
+    newUser.password = req.body.password,
+    newUser.save()
+    res.status(200).json({message: `User ${newUser.username} created`});
+    } catch (error) {
+        res.status(404).json({message: "no user created"});
+    }
+})
 
-// router.put("/users/:id", (req: Request, res: Response) => {
-//     const userId = parseInt(req.params.id);
-//     const userIndex: any = users.findIndex((el) => el.id === userId)
-//     if (userIndex !== -1) {
-//         users[userIndex] = { 
-//             ...users[userIndex],           
-//             ...req.body,                   
-//             id: userId                     
-//         };
-//         res.json(users[userIndex]);
-//   } else {
-//     res.status(404).json({ message: "user not found" });
-//   }
-// })
-
+router.put("/users/:id", async (req: Request, res: Response) => {
+    try {
+        const user = await User.findOneByOrFail({id: parseInt(req.params.id)})
+        const userToUpdate = Object.assign(
+            user,
+            req.body
+        )
+        userToUpdate.save()
+        res.status(200).json({message: `User updated`});
+    } catch (error) {
+       res.status(404).json({message: "no user updated"}); 
+    }
+})
 
 export default router
