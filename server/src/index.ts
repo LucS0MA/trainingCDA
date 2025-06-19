@@ -6,10 +6,12 @@ import "reflect-metadata";
 import { dataSourceBlogDB } from "./db/db";
 import bodyParser from "body-parser";
 import * as dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 export const app = express();
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use("/api", userRouter);

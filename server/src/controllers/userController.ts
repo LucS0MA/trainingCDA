@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../entity/Users";
 import * as argon2 from "argon2";
+import jwt, { Secret } from "jsonwebtoken";
 
 export const browse = async (_req: Request, res: Response) => {
   try {
@@ -50,7 +51,20 @@ export const login = async (req: Request, res: Response) => {
     console.log(req.body);
     const user = await User.findOneByOrFail({ email: req.body.email });
     if (await argon2.verify(user.password, req.body.password)) {
-      res.status(200).json({ message: `User ${user.email} connected` });
+      const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET_KEY as Secret,
+        {
+          expiresIn: "2 days",
+        },
+      );
+      res.cookie("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      });
+      res
+        .status(200)
+        .json({ message: `User ${user.email} & ${token} connected` });
     } else {
       res.status(404).json({ message: `wrong login informations` });
     }
