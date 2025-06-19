@@ -43,7 +43,7 @@ export const register = async (req: Request, res: Response) => {
     newUser.username = req.body.username;
     newUser.email = req.body.email;
     newUser.password = await argon2.hash(req.body.password);
-    await newUser.save(); 
+    await newUser.save();
     res.status(201).json({ message: `User ${newUser.username} created` });
   } catch (error) {
     console.error("Error creating user:", error);
@@ -67,13 +67,13 @@ export const login = async (req: Request, res: Response) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
       });
-      res.status(200).json({ message: `User ${user.email} connected` }); 
+      res.status(200).json({ message: `User ${user.email} connected` });
     } else {
       res.status(401).json({ message: `Invalid credentials` });
     }
   } catch (error) {
     console.error("Error during login:", error);
-    res.status(401).json({ message: `Invalid credentials` }); 
+    res.status(401).json({ message: `Invalid credentials` });
   }
 };
 

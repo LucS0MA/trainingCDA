@@ -6,9 +6,9 @@ import * as userController from "../controllers/userController";
 
 const userRouter = express.Router();
 
-userRouter.get("/users", userController.browse);
-userRouter.get("/users/:id", userController.getById);
-userRouter.delete("/users/:id", userController.remove);
+userRouter.get("/users", auth, userController.browse);
+userRouter.get("/users/:id", auth, userController.getById);
+userRouter.delete("/users/:id", auth, userController.remove);
 userRouter.put("/users/:id", auth, userController.update);
 userRouter.post(
   "/register",
@@ -16,5 +16,11 @@ userRouter.post(
   userController.register,
 );
 userRouter.post("/login", validateData(userLoginSchema), userController.login);
+userRouter.get(
+  "/logout",
+  validateData(userLoginSchema),
+  auth,
+  userController.logout,
+);
 
 export default userRouter;

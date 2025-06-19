@@ -9,7 +9,10 @@ export const auth = (req: Request, res: Response, next: NextFunction) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as Secret) as { id: number; email: string };
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as Secret) as {
+      id: number;
+      email: string;
+    };
     (req as any).userId = decoded.id;
     (req as any).userEmail = decoded.email;
     return next();
