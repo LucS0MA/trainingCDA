@@ -1,30 +1,38 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, BaseEntity } from "typeorm"
-import { User } from "./Users"
-import { Comment } from "./Comments"
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+  BaseEntity,
+} from "typeorm";
+import { User } from "./Users";
+import { Comment } from "./Comments";
 
 @Entity()
 export class Post extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({type: "varchar", length: 30, unique: true,})
-    title: string
+  @Column({ type: "varchar", length: 30, unique: true })
+  title: string;
 
-    @Column({type: "varchar", length: 150})
-    description: string
+  @Column({ type: "varchar", length: 150 })
+  description: string;
 
-    @Column({type: "varchar"})
-    content: string
+  @Column({ type: "varchar" })
+  content: string;
 
-    @CreateDateColumn() 
-    createdAt: Date
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @CreateDateColumn() 
-    updatedAt: Date
+  @CreateDateColumn()
+  updatedAt: Date;
 
-    @ManyToOne(() => User, (user) => user.post)
-    users: User
+  @ManyToOne(() => User, (user) => user.post)
+  users: User;
 
-    @OneToMany(() => Comment, (comment) => comment.posts)
-    comment: Comment[]
+  @OneToMany(() => Comment, (comment) => comment.posts)
+  comment: Comment[];
 }
