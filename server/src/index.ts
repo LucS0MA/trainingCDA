@@ -1,14 +1,18 @@
 import express, { Request, Response } from "express";
-import userRoutes from './routes/userRoutes';
-import postRoutes from './routes/postRoutes';
-import commentRoutes from './routes/commentRoutes';
+import userRouter from './routes/userRoutes';
+import postRouter from './routes/postRoutes';
+import commentRouter from './routes/commentRoutes';
 import "reflect-metadata";
 import { dataSourceBlogDB } from "./db/db";
+import bodyParser from "body-parser";
 
 export const app = express();
 
+app.use(bodyParser.json());
 app.use(express.json());
-app.use("/api", userRoutes, postRoutes, commentRoutes);
+app.use("/api", userRouter);
+app.use("/api", postRouter);
+app.use("/api", commentRouter);
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('biniou');
