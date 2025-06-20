@@ -30,8 +30,8 @@ export class Post extends BaseEntity {
   @CreateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, (user) => user.post)
-  users: User;
+  @ManyToOne(() => User, (user) => user.posts)
+  user: User;
 
   @OneToMany(() => Comment, (comment) => comment.posts)
   comment: Comment[];

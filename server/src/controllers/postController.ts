@@ -5,7 +5,10 @@ const router = Router();
 
 export const browse = async (_req: Request, res: Response) => {
   try {
-    const posts = await Post.find();
+        const posts = await Post.find({
+      relations: ['user'],
+      order: { createdAt: 'DESC' } 
+    });
     res.status(200).json(posts);
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -15,7 +18,7 @@ export const browse = async (_req: Request, res: Response) => {
 
 export const getById = async (req: Request, res: Response) => {
   try {
-    const post = await Post.findOne({ where: { id: parseInt(req.params.id) } });
+    const post = await Post.findOne({ where: { id: parseInt(req.params.id) }, relations: ["user"] });
     res.status(200).json(post);
   } catch (error) {
     console.error("Error fetching post:", error);

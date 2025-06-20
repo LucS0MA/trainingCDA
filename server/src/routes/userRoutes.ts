@@ -15,12 +15,8 @@ userRouter.post(
   validateData(userRegistrationSchema),
   userController.register,
 );
-userRouter.post("/login", validateData(userLoginSchema), userController.login);
-userRouter.get(
-  "/logout",
-  validateData(userLoginSchema),
-  auth,
-  userController.logout,
-);
+userRouter.post("/auth/login", validateData(userLoginSchema), userController.login);
+userRouter.get("/auth/logout", auth, userController.logout);
+userRouter.get("/auth/me", auth, userController.isAuth);
 
 export default userRouter;

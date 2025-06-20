@@ -51,13 +51,17 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
+export const isAuth = async (req: Request, res: Response) => {
+  res.status(200).json({ id: (req as any).userId, username: (req as any).userName, email: (req as any).userEmail });
+};
+
 export const login = async (req: Request, res: Response) => {
   try {
     console.log(req.body);
     const user = await User.findOneByOrFail({ email: req.body.email });
     if (await argon2.verify(user.password, req.body.password)) {
       const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email, username: user.username },
         process.env.JWT_SECRET_KEY as Secret,
         {
           expiresIn: "2 days",
@@ -79,8 +83,10 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = async (_req: Request, res: Response) => {
   try {
-    res
-      .clearCookie("access_token")
+    res.clearCookie("access_token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      })
       .status(200)
       .json({ message: "Successfully logged out" });
   } catch (error) {

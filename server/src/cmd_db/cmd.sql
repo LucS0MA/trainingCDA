@@ -7,7 +7,7 @@
 --   ('edgar', 'hashed_password_5', 'edgar@example.com',  datetime('now'),  datetime('now'));
 
 
--- INSERT INTO "post" (title, description, content, "createdAt", "updatedAt", usersId)
+-- INSERT INTO "post" (title, description, content, "createdAt", "updatedAt", userId)
 -- VALUES 
 --   ('Hello World', 'Mon premier post', 'Contenu du post 1',  datetime('now'),  datetime('now'), 1),
 --   ('Guide SQL', 'Un guide simple', 'Voici un guide...',  datetime('now'),  datetime('now'), 2),
@@ -23,3 +23,5 @@
 --   ('J ai appris beaucoup.',  datetime('now'),  datetime('now'), 4, 3),  
 --   ('Tu devrais développer ce point.',  datetime('now'),  datetime('now'), 5, 3),
 --   ('Excellent article sur la sécurité !',  datetime('now'),  datetime('now'), 1, 4); 
+
+-- DELETE FROM post;

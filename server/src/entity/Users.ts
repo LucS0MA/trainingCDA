@@ -29,9 +29,9 @@ export class User extends BaseEntity {
   @CreateDateColumn()
   updatedAt?: Date;
 
-  @OneToMany(() => Post, (post) => post.users)
-  post?: Post[];
+  @OneToMany(() => Post, (post) => post.user)
+  posts?: Post[];
 
-  @OneToMany(() => Comment, (comment) => comment.users)
+  @OneToMany(() => Comment, (comment) => comment.user)
   comment?: Comment[];
 }

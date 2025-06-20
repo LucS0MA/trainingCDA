@@ -6,11 +6,23 @@ import "reflect-metadata";
 import { dataSourceBlogDB } from "./db/db";
 import bodyParser from "body-parser";
 import * as dotenv from "dotenv";
+import cors from "cors";
 import cookieParser from "cookie-parser";
 
 dotenv.config();
 export const app = express();
 
+
+const allowedOrigins = ["http://localhost:5173"];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ["POST", "GET", "PUT", "DELETE"]
+};
+
+app.use(cors(options));
+  
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.json());
@@ -24,5 +36,5 @@ app.get("/", (_req: Request, res: Response) => {
 
 app.listen(process.env.PORT, async () => {
   await dataSourceBlogDB.initialize();
-  console.log("🚀 server started ! 🚀");
+  console.log(`🚀 server started on ${process.env.PORT} ! 🚀`);
 });
