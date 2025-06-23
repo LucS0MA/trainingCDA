@@ -1,0 +1,40 @@
+services:
+  server:
+    build: ./server
+    volumes:
+      - ./server/src:/app/src
+    healthcheck:
+        test: "curl --fail http://localhost:8080/api/posts || exit 1"
+        interval: 10s  
+        timeout: 5s
+        retries: 5
+    env_file:
+      - ./server/.env
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+  client:
+    build: ./client
+    volumes:
+      - ./client/src:/app/src
+    depends_on:
+      server:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --request GET --url 'http://localhost:5173' || exit 1"
+      interval: 1s
+      timeout: 2s
+      retries: 100
+    env_file:
+      - ./client/.env
+  api_gateway:
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      server:
+        condition: service_healthy
+      client:
+        condition: service_healthy
+    ports:
+      - 7000:80
