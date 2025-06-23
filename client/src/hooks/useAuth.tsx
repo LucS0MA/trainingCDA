@@ -1,5 +1,3 @@
-"use client"
-
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 import type { User } from "../types/blog"
 import { blogApi } from "../lib/api"
@@ -13,12 +11,14 @@ interface AuthContextType {
   checkingAuth: boolean
 }
 
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [checkingAuth, setCheckingAuth] = useState(true)
+
 
   useEffect(() => {
     checkAuthStatus()
@@ -46,6 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       throw error
     } finally {
       setLoading(false)
+            
     }
   }
 

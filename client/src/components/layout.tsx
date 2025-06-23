@@ -1,9 +1,7 @@
-"use client"
-
 import type React from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Button } from "./ui/button"
-import { PenTool, Home, User, LogIn, LogOut } from "lucide-react"
+import { PenTool, Home, User, LogIn, LogOut, Pen } from "lucide-react"
 import { useAuth } from "../hooks/useAuth"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -11,8 +9,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth()
 
   const isActive = (path: string) => location.pathname === path
-
-  console.log(user)
 
   return (
     <div className="min-h-screen bg-stone font-lora text-anthracite">
@@ -36,6 +32,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 >
                   <Home className="h-4 w-4 mr-2" />
                   Home
+                </Button>
+              </Link>
+
+              <Link to="/NewArticle">
+                <Button
+                  variant={isActive("/NewArticle") ? "default" : "ghost"}
+                  className={`${
+                    isActive("/NewArticle")
+                      ? "bg-sage text-white hover:bg-sage/90"
+                      : "text-anthracite hover:text-sage hover:bg-sage/10"
+                  }`}
+                >
+                  <Pen className="h-4 w-4 mr-2" />
+                  Write
                 </Button>
               </Link>
 

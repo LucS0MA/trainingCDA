@@ -42,7 +42,7 @@ export default function RegisterPage() {
 
     try {
       await register(name, email, password)
-      navigate("/register")
+      navigate("/login")
     } catch (error: any) {
       setError(error.response?.data?.message || "Registration failed. Please try again.")
     } finally {

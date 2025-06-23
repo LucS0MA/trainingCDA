@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
@@ -28,7 +26,7 @@ export default function LoginPage() {
 
     try {
       await login(email, password)
-      navigate("/login")
+      navigate("/")
     } catch (error: any) {
       setError(error.response?.data?.message || "Login failed. Please try again.")
     } finally {

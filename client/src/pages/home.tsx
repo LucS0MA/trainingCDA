@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Button } from "../components/ui/button"
@@ -129,7 +127,7 @@ export default function HomePage() {
                     <CardDescription className="flex items-center gap-4 text-anthracite/60">
                       <span className="flex items-center gap-1">
                         <User className="h-4 w-4" />
-                        {post.users?.username}
+                        {post.user?.username}
                       </span>
                       <span className="flex items-center gap-1">
                         <CalendarDays className="h-4 w-4" />
