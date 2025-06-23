@@ -9,14 +9,18 @@ import { ImageUploadNode } from "../components/tiptap-node/image-upload-node"
 import { handleImageUpload, MAX_FILE_SIZE } from "../lib/tiptap-utils"
 import { blogApi } from "../lib/api"
 
+
 import "../components/tiptap-node/paragraph-node/paragraph-node.scss"
+import { useAuth } from "../hooks/useAuth"
 
 export default function NewArticlePage() {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const { user } = useAuth();
 
+  console.log(user?.id)
   const navigate = useNavigate()
 
   const editor = useEditor({
@@ -47,16 +51,10 @@ export default function NewArticlePage() {
 
     const content = editor.getHTML()
 
-    const postData = {
-      title,
-      description,
-      content,
-    }
-
-    console.log(postData)
+    let userId = user?.id!;
 
     try {
-      await blogApi.createPost(postData)
+      await blogApi.createPost({title, description, content, userId})
       navigate("/")
     } catch (error: any) {
       setError(error.response?.data?.message || "Échec de la publication")
@@ -112,7 +110,7 @@ export default function NewArticlePage() {
           <button
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+            className="px-4 py-2 bg-sage text-white rounded disabled:opacity-50"
           >
             {loading ? "Publication en cours..." : "Publier l'article"}
           </button>

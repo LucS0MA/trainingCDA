@@ -42,6 +42,7 @@ export const blogApi = {
     title: string;
     content: string;
     description: string;
+    userId: number;
   }) => api.post("/posts", postData),
 
   updatePost: (

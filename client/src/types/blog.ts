@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  id: number;
   username: string;
   email: string;
   createdAt: Date;
@@ -9,18 +9,19 @@ export interface User {
 }
 
 export interface Post {
-  id: string;
+  id: number;
   title: string;
   description: string;
   content: string;
   user: User;
+  userId?: number;
   createdAt: string;
   updatedAt: string;
   comment: string;
 }
 
 export interface Comment {
-  id: string;
+  id: number;
   content: string;
   users: User;
   createdAt: string;

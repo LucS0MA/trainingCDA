@@ -36,7 +36,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   Home
                 </Button>
               </Link>
-
+              {user ? (
               <Link to="/NewArticle">
                 <Button
                   variant={isActive("/NewArticle") ? "default" : "ghost"}
@@ -50,7 +50,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   Write
                 </Button>
               </Link>
-
+              ) : (
+                <Link to="/register">
+                <Button
+                  variant={isActive("/NewArticle") ? "default" : "ghost"}
+                  className={`${
+                    isActive("/NewArticle")
+                      ? "bg-sage text-white hover:bg-sage/90"
+                      : "text-anthracite hover:text-sage hover:bg-sage/10"
+                  }`}
+                >
+                  <Pen className="h-4 w-4 mr-2" />
+                  Write
+                </Button>
+              </Link>
+              )}
               {user ? (
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-anthracite/70">

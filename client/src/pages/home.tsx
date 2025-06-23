@@ -27,7 +27,6 @@ export default function HomePage() {
       const response = await blogApi.getPosts();
       const postsData = response.data || [];
       setPosts(Array.isArray(postsData) ? postsData : []);
-      console.log(posts);
     } catch (error) {
       console.error("Failed to fetch posts:", error);
     } finally {
