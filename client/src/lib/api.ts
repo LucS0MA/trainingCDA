@@ -1,6 +1,7 @@
-import axios from "axios"
+import axios from "axios";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/api"
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:8080/api";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -8,23 +9,24 @@ export const api = axios.create({
     "Content-Type": "application/json",
   },
   withCredentials: true,
-})
+});
 
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      window.location.href = "/login"
+      window.location.href = "/login";
     }
-    return Promise.reject(error)
+    return Promise.reject(error);
   },
-)
-
+);
 
 export const blogApi = {
-  login: (credentials: { email: string; password: string }) => api.post("/auth/login", credentials),
+  login: (credentials: { email: string; password: string }) =>
+    api.post("/auth/login", credentials),
 
-  register: (userData: { username: string; email: string; password: string }) => api.post("/register", userData),
+  register: (userData: { username: string; email: string; password: string }) =>
+    api.post("/register", userData),
 
   logout: () => api.get("/auth/logout"),
 
@@ -36,11 +38,16 @@ export const blogApi = {
 
   getPost: (id: string) => api.get(`/posts/${id}`),
 
-  createPost: (postData: { title: string; content: string; description: string }) => api.post("/posts", postData),
+  createPost: (postData: {
+    title: string;
+    content: string;
+    description: string;
+  }) => api.post("/posts", postData),
 
-  updatePost: (id: string, postData: Partial<{ title: string; content: string; description: string }>) =>
-    api.put(`/posts/${id}`, postData),
+  updatePost: (
+    id: string,
+    postData: Partial<{ title: string; content: string; description: string }>,
+  ) => api.put(`/posts/${id}`, postData),
 
   deletePost: (id: string) => api.delete(`/posts/${id}`),
-
-}
+};

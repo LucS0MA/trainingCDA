@@ -1,67 +1,82 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { Alert, AlertDescription } from "../components/ui/alert"
-import { UserPlus, Eye, EyeOff } from "lucide-react"
-import { useAuth } from "../hooks/useAuth"
+import type React from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Alert, AlertDescription } from "../components/ui/alert";
+import { UserPlus, Eye, EyeOff } from "lucide-react";
+import { useAuth } from "../hooks/useAuth";
 
 export default function RegisterPage() {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const { register } = useAuth()
-  const navigate = useNavigate()
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
+    setError("");
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
-      return
+      setError("Passwords do not match");
+      return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters long")
-      return
+      setError("Password must be at least 6 characters long");
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      await register(name, email, password)
-      navigate("/login")
+      await register(name, email, password);
+      navigate("/login");
     } catch (error: any) {
-      setError(error.response?.data?.message || "Registration failed. Please try again.")
+      setError(
+        error.response?.data?.message ||
+          "Registration failed. Please try again.",
+      );
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-stone flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center animate-fade-in-down">
           <UserPlus className="mx-auto h-12 w-12 text-sage" />
-          <h2 className="mt-6 font-playfair text-3xl font-bold text-anthracite">Join BlogCraft</h2>
-          <p className="mt-2 text-sm text-anthracite/70">Create your account and start sharing your stories</p>
+          <h2 className="mt-6 font-playfair text-3xl font-bold text-anthracite">
+            Join BlogCraft
+          </h2>
+          <p className="mt-2 text-sm text-anthracite/70">
+            Create your account and start sharing your stories
+          </p>
         </div>
 
         <Card className="bg-white/80 backdrop-blur-sm border-sage/20 animate-fade-in-up">
           <CardHeader>
-            <CardTitle className="font-playfair text-2xl text-center text-anthracite">Create Account</CardTitle>
+            <CardTitle className="font-playfair text-2xl text-center text-anthracite">
+              Create Account
+            </CardTitle>
             <CardDescription className="text-center text-anthracite/70">
               Fill in your details to get started
             </CardDescription>
@@ -70,7 +85,9 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
                 <Alert className="border-red-200 bg-red-50">
-                  <AlertDescription className="text-red-800">{error}</AlertDescription>
+                  <AlertDescription className="text-red-800">
+                    {error}
+                  </AlertDescription>
                 </Alert>
               )}
 
@@ -105,7 +122,10 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-anthracite font-medium">
+                <Label
+                  htmlFor="password"
+                  className="text-anthracite font-medium"
+                >
                   Password
                 </Label>
                 <div className="relative">
@@ -123,13 +143,20 @@ export default function RegisterPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-anthracite/50 hover:text-anthracite"
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword" className="text-anthracite font-medium">
+                <Label
+                  htmlFor="confirmPassword"
+                  className="text-anthracite font-medium"
+                >
                   Confirm Password
                 </Label>
                 <div className="relative">
@@ -147,7 +174,11 @@ export default function RegisterPage() {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-anthracite/50 hover:text-anthracite"
                   >
-                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -164,7 +195,10 @@ export default function RegisterPage() {
             <div className="mt-6 text-center">
               <p className="text-sm text-anthracite/70">
                 Already have an account?{" "}
-                <Link to="/login" className="font-medium text-sage hover:text-sage/80 transition-colors">
+                <Link
+                  to="/login"
+                  className="font-medium text-sage hover:text-sage/80 transition-colors"
+                >
                   Sign in here
                 </Link>
               </p>
@@ -173,5 +207,5 @@ export default function RegisterPage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }

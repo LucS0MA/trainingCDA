@@ -1,51 +1,50 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useParams, Link } from "react-router-dom"
-import { Button } from "../components/ui/button"
-import { Card, CardContent } from "../components/ui/card"
-import { CalendarDays, ArrowLeft, Clock, User } from "lucide-react"
-import type { Post } from "../types/blog"
-import { blogApi } from "../lib/api"
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
+import { CalendarDays, ArrowLeft, Clock, User } from "lucide-react";
+import type { Post } from "../types/blog";
+import { blogApi } from "../lib/api";
 
 export default function ArticlePage() {
-  const { id } = useParams<{ id: string }>()
-  const [post, setPost] = useState<Post | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const { id } = useParams<{ id: string }>();
+  const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (id) {
-      fetchPost(id)
+      fetchPost(id);
     }
-  }, [id])
+  }, [id]);
 
   const fetchPost = async (postId: string) => {
     try {
-      setLoading(true)
-      const response = await blogApi.getPost(postId)
-      setPost(response.data)
+      setLoading(true);
+      const response = await blogApi.getPost(postId);
+      setPost(response.data);
     } catch (error: any) {
-      setError(error.response?.data?.message || "Failed to load article")
+      setError(error.response?.data?.message || "Failed to load article");
     } finally {
-      setLoading(false)
-      
+      setLoading(false);
     }
-  }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    })
-  }
+    });
+  };
 
   const estimateReadingTime = (content: string) => {
-    const wordsPerMinute = 200
-    const wordCount = content.split(/\s+/).length
-    return Math.ceil(wordCount / wordsPerMinute)
-  }
+    const wordsPerMinute = 200;
+    const wordCount = content.split(/\s+/).length;
+    return Math.ceil(wordCount / wordsPerMinute);
+  };
 
   if (loading) {
     return (
@@ -63,7 +62,7 @@ export default function ArticlePage() {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   if (error || !post) {
@@ -72,8 +71,12 @@ export default function ArticlePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Card className="p-8">
             <CardContent>
-              <h1 className="font-playfair text-3xl font-bold text-anthracite mb-4">Article Not Found</h1>
-              <p className="text-anthracite/70 mb-6">{error || "The article you're looking for doesn't exist."}</p>
+              <h1 className="font-playfair text-3xl font-bold text-anthracite mb-4">
+                Article Not Found
+              </h1>
+              <p className="text-anthracite/70 mb-6">
+                {error || "The article you're looking for doesn't exist."}
+              </p>
               <Link to="/">
                 <Button className="bg-sage hover:bg-sage/90 text-white">
                   <ArrowLeft className="mr-2 h-4 w-4" />
@@ -84,7 +87,7 @@ export default function ArticlePage() {
           </Card>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -93,7 +96,10 @@ export default function ArticlePage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back button */}
           <Link to="/" className="inline-block mb-8">
-            <Button variant="ghost" className="text-sage hover:text-sage/80 hover:bg-sage/10 p-0 h-auto">
+            <Button
+              variant="ghost"
+              className="text-sage hover:text-sage/80 hover:bg-sage/10 p-0 h-auto"
+            >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Articles
             </Button>
@@ -126,7 +132,9 @@ export default function ArticlePage() {
             <CardContent className="p-8 md:p-12">
               <div
                 className="prose prose-lg max-w-none text-anthracite prose-headings:font-playfair prose-headings:text-anthracite prose-a:text-sage prose-a:no-underline hover:prose-a:underline prose-blockquote:border-sage prose-blockquote:text-anthracite/80"
-                dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, "<br />") }}
+                dangerouslySetInnerHTML={{
+                  __html: post.content.replace(/\n/g, "<br />"),
+                }}
               />
             </CardContent>
           </Card>
@@ -139,18 +147,24 @@ export default function ArticlePage() {
                   <User className="h-6 w-6 text-sage" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-anthracite">{post.user.username}</h3>
-                  <p className="text-anthracite/60 text-sm">Published on {formatDate(post.createdAt)}</p>
+                  <h3 className="font-semibold text-anthracite">
+                    {post.user.username}
+                  </h3>
+                  <p className="text-anthracite/60 text-sm">
+                    Published on {formatDate(post.createdAt)}
+                  </p>
                 </div>
               </div>
 
               <Link to="/">
-                <Button className="bg-sage hover:bg-sage/90 text-white">More Articles</Button>
+                <Button className="bg-sage hover:bg-sage/90 text-white">
+                  More Articles
+                </Button>
               </Link>
             </div>
           </footer>
         </div>
       </article>
     </div>
-  )
+  );
 }

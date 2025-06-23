@@ -1,41 +1,47 @@
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { Button } from "../components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
-import { CalendarDays, User, ArrowRight, BookOpen } from "lucide-react"
-import type { Post } from "../types/blog"
-import { blogApi } from "../lib/api"
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { CalendarDays, User, ArrowRight, BookOpen } from "lucide-react";
+import type { Post } from "../types/blog";
+import { blogApi } from "../lib/api";
 
 export default function HomePage() {
-  const [posts, setPosts] = useState<Post[]>([])
-  const [loading, setLoading] = useState(true)
-  const [mounted, setMounted] = useState(false)
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-    fetchPosts()
-  }, [])
+    setMounted(true);
+    fetchPosts();
+  }, []);
 
   const fetchPosts = async () => {
     try {
-      const response = await blogApi.getPosts()
-      const postsData = response.data || []
-      setPosts(Array.isArray(postsData) ? postsData : [])
-      console.log(posts)
+      const response = await blogApi.getPosts();
+      const postsData = response.data || [];
+      setPosts(Array.isArray(postsData) ? postsData : []);
+      console.log(posts);
     } catch (error) {
-      console.error("Failed to fetch posts:", error)
+      console.error("Failed to fetch posts:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    })
-  }
+    });
+  };
 
   return (
     <div className="min-h-screen">
@@ -54,14 +60,17 @@ export default function HomePage() {
                 mounted ? "animate-fade-in-up" : "opacity-0"
               }`}
             >
-              Discover stories, insights, and ideas from writers around the world. Join our community of passionate
-              storytellers.
+              Discover stories, insights, and ideas from writers around the
+              world. Join our community of passionate storytellers.
             </p>
             <div
               className={`flex flex-col sm:flex-row gap-4 justify-center ${mounted ? "animate-fade-in" : "opacity-0"}`}
               style={{ animationDelay: "0.3s" }}
             >
-              <Button size="lg" className="bg-sage hover:bg-sage/90 text-white px-8 py-3 text-lg">
+              <Button
+                size="lg"
+                className="bg-sage hover:bg-sage/90 text-white px-8 py-3 text-lg"
+              >
                 <BookOpen className="mr-2 h-5 w-5" />
                 Start Reading
               </Button>
@@ -86,7 +95,9 @@ export default function HomePage() {
             className={`text-center mb-12 ${mounted ? "animate-slide-in-left" : "opacity-0"}`}
             style={{ animationDelay: "0.5s" }}
           >
-            <h2 className="font-playfair text-4xl md:text-5xl font-bold text-anthracite mb-4">Latest Stories</h2>
+            <h2 className="font-playfair text-4xl md:text-5xl font-bold text-anthracite mb-4">
+              Latest Stories
+            </h2>
             <p className="text-xl text-anthracite/70 max-w-2xl mx-auto">
               Explore our most recent articles and discover new perspectives
             </p>
@@ -154,8 +165,12 @@ export default function HomePage() {
           {!loading && posts.length === 0 && (
             <div className="text-center py-12">
               <BookOpen className="h-16 w-16 text-sage/50 mx-auto mb-4" />
-              <h3 className="font-playfair text-2xl text-anthracite mb-2">No posts yet</h3>
-              <p className="text-anthracite/60">Be the first to share your story!</p>
+              <h3 className="font-playfair text-2xl text-anthracite mb-2">
+                No posts yet
+              </h3>
+              <p className="text-anthracite/60">
+                Be the first to share your story!
+              </p>
             </div>
           )}
         </div>
@@ -163,15 +178,22 @@ export default function HomePage() {
 
       <section className="py-16 bg-sage/5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className={`${mounted ? "animate-slide-in-right" : "opacity-0"}`} style={{ animationDelay: "1s" }}>
+          <div
+            className={`${mounted ? "animate-slide-in-right" : "opacity-0"}`}
+            style={{ animationDelay: "1s" }}
+          >
             <h2 className="font-playfair text-3xl md:text-4xl font-bold text-anthracite mb-4">
               Ready to Share Your Story?
             </h2>
             <p className="text-xl text-anthracite/70 mb-8">
-              Join our community of writers and start crafting your narrative today.
+              Join our community of writers and start crafting your narrative
+              today.
             </p>
             <Link to="/register">
-              <Button size="lg" className="bg-sage hover:bg-sage/90 text-white px-8 py-3 text-lg">
+              <Button
+                size="lg"
+                className="bg-sage hover:bg-sage/90 text-white px-8 py-3 text-lg"
+              >
                 Get Started
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -180,5 +202,5 @@ export default function HomePage() {
         </div>
       </section>
     </div>
-  )
+  );
 }
