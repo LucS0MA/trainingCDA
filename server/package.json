@@ -6,7 +6,7 @@
     "test": "jest",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "start": "ts-node-dev ./src/index.ts"
+    "start": "ts-node-dev ./src/server.ts"
   },
   "keywords": [],
   "author": "",

@@ -42,8 +42,3 @@ export const initializeDatabase = async () => {
     console.log('Base de données initialisée');
   }
 };
-
-app.listen(process.env.PORT, async () => {
-  await initializeDatabase();
-  console.log(`🚀 server started on ${process.env.PORT} ! 🚀`);
-});

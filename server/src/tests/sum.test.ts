@@ -12,10 +12,9 @@ describe('GET /api/users/:id', () => {
   let token: string;
   let testUser: User;
 
-  // Fixed: Use consistent JWT payload structure
   const createAuthToken = (id: number, email: string, username: string) => {
     return jwt.sign(
-      { id: id, email: email, username: username }, // Keep this consistent with auth middleware
+      { id: id, email: email, username: username }, 
       process.env.JWT_SECRET_KEY as Secret,
       { expiresIn: '2 days' }
     );
