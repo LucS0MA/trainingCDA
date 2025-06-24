@@ -15,7 +15,11 @@ export const browse = async (_req: Request, res: Response) => {
 
 export const getById = async (req: Request, res: Response) => {
   try {
-    const user = await User.findOne({ where: { id: parseInt(req.params.id) } });
+    const id = parseInt(req.params.id)
+    if (isNaN(id)) {
+      res.status(400).json({ message: "ID not valid" });
+    }
+    const user = await User.findOne({ where: { id } });
     if (!user) {
       res.status(404).json({ message: "User not found" });
     }
