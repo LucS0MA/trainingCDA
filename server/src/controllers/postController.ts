@@ -18,7 +18,7 @@ export const browse = async (_req: Request, res: Response) => {
 
 export const getById = async (req: Request, res: Response) => {
   try {
-    const post = await Post.findOne({ where: { id: parseInt(req.params.id) }, relations: ["user"] });
+    const post = await Post.findOne({ where: { id: parseInt(req.params.id) }, relations: ["user", "comments", "comments.user"] });
     res.status(200).json(post);
   } catch (error) {
     console.error("Error fetching post:", error);

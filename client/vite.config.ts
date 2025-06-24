@@ -5,10 +5,17 @@ import path from "path";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  server: { host: true, hmr: { path: "/hmr" }, allowedHosts: true },
-    resolve: {
+  server: {
+    host: true,
+    hmr: { path: "/hmr" },
+    watch: {
+      usePolling: true,
+    },
+    allowedHosts: true,
+  },
+  resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
 });

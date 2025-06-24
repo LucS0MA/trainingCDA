@@ -37,33 +37,33 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </Button>
               </Link>
               {user ? (
-              <Link to="/NewArticle">
-                <Button
-                  variant={isActive("/NewArticle") ? "default" : "ghost"}
-                  className={`${
-                    isActive("/NewArticle")
-                      ? "bg-sage text-white hover:bg-sage/90"
-                      : "text-anthracite hover:text-sage hover:bg-sage/10"
-                  }`}
-                >
-                  <Pen className="h-4 w-4 mr-2" />
-                  Write
-                </Button>
-              </Link>
+                <Link to="/NewArticle">
+                  <Button
+                    variant={isActive("/NewArticle") ? "default" : "ghost"}
+                    className={`${
+                      isActive("/NewArticle")
+                        ? "bg-sage text-white hover:bg-sage/90"
+                        : "text-anthracite hover:text-sage hover:bg-sage/10"
+                    }`}
+                  >
+                    <Pen className="h-4 w-4 mr-2" />
+                    Write
+                  </Button>
+                </Link>
               ) : (
                 <Link to="/register">
-                <Button
-                  variant={isActive("/NewArticle") ? "default" : "ghost"}
-                  className={`${
-                    isActive("/NewArticle")
-                      ? "bg-sage text-white hover:bg-sage/90"
-                      : "text-anthracite hover:text-sage hover:bg-sage/10"
-                  }`}
-                >
-                  <Pen className="h-4 w-4 mr-2" />
-                  Write
-                </Button>
-              </Link>
+                  <Button
+                    variant={isActive("/NewArticle") ? "default" : "ghost"}
+                    className={`${
+                      isActive("/NewArticle")
+                        ? "bg-sage text-white hover:bg-sage/90"
+                        : "text-anthracite hover:text-sage hover:bg-sage/10"
+                    }`}
+                  >
+                    <Pen className="h-4 w-4 mr-2" />
+                    Write
+                  </Button>
+                </Link>
               )}
               {user ? (
                 <div className="flex items-center space-x-2">

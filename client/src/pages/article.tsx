@@ -4,15 +4,20 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
-import { CalendarDays, ArrowLeft, Clock, User } from "lucide-react";
+import { CalendarDays, ArrowLeft, Clock, User, Trash2 } from "lucide-react";
 import type { Post } from "../types/blog";
+import type { Comment } from "../types/blog";
 import { blogApi } from "../lib/api";
+import NewComment from "../components/newComment";
+import { useAuth } from "../hooks/useAuth";
 
 export default function ArticlePage() {
   const { id } = useParams<{ id: string }>();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
+  const [comments, setComments] = useState<Array<Comment> | null>([]);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     if (id) {
@@ -24,6 +29,7 @@ export default function ArticlePage() {
     try {
       setLoading(true);
       const response = await blogApi.getPost(postId);
+      setComments(response.data.comments);
       setPost(response.data);
     } catch (error: any) {
       setError(error.response?.data?.message || "Failed to load article");
@@ -31,6 +37,19 @@ export default function ArticlePage() {
       setLoading(false);
     }
   };
+
+  const handleDeleteCom = async (commentId: number) => {
+      try {
+        console.log(commentId)
+        await blogApi.deleteComment(commentId);
+      } catch (error: any) {
+        setError(error.response?.data?.message || "Échec de la publication");
+      } finally {
+        setLoading(false);
+      }
+  };
+
+  const postId = post?.id;
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -163,6 +182,58 @@ export default function ArticlePage() {
               </Link>
             </div>
           </footer>
+          {/* Article comments */}
+
+          {comments?.length === 0 ? (
+            <h2 className="font-playfair text-2xl md:text-2xl font-bold text-anthracite mb-6 leading-tight mt-20">
+              No comments yet
+            </h2>
+          ) : (
+            <h2 className="font-playfair text-2xl md:text-2xl font-bold text-anthracite mb-6 leading-tight mt-20">
+              Comments
+            </h2>
+          )}
+          {comments?.map((el: any, i: number) => (
+            <Card
+              key={i}
+              className="bg-white/80 backdrop-blur-sm border-sage/20 animate-fade-in-up m-5"
+            >
+              <CardContent className="">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <div
+                      className="prose prose-lg max-w-none text-anthracite prose-headings:font-playfair prose-headings:text-anthracite prose-a:text-sage prose-a:no-underline hover:prose-a:underline prose-blockquote:border-sage prose-blockquote:text-anthracite/80"
+                      dangerouslySetInnerHTML={{
+                        __html: el.content.replace(/\n/g, "<br />"),
+                      }}
+                    />
+                    <div className="flex items-center gap-5">
+                      <p className="font-playfair mt-10 text-sage/90">
+                        From {el.user.username}
+                      </p>
+                      <p className="font-playfair mt-10 text-sage/90">
+                        {formatDate(el.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Bouton de suppression aligné à droite */}
+                  {el.user.id === user?.id && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-red-200 text-red-600 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors ml-4 shrink-0"
+                      onClick={() => handleDeleteCom(el.id)}
+                    >
+                      <Trash2 className="h-4 w-4 mr-1" />
+                      Delete
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+          <NewComment postId={postId} />
         </div>
       </article>
     </div>

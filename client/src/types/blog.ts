@@ -17,7 +17,7 @@ export interface Post {
   userId?: number;
   createdAt: string;
   updatedAt: string;
-  comment: string;
+  comments: Comment;
 }
 
 export interface Comment {
@@ -27,6 +27,7 @@ export interface Comment {
   createdAt: string;
   updatedAt: string;
   posts: Post;
+  postId: number;
 }
 
 export interface LoginResponse {

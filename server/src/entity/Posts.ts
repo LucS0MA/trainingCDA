@@ -33,6 +33,6 @@ export class Post extends BaseEntity {
   @ManyToOne(() => User, (user) => user.posts)
   user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.posts)
-  comment: Comment[];
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[];
 }

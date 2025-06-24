@@ -33,5 +33,5 @@ export class User extends BaseEntity {
   posts?: Post[];
 
   @OneToMany(() => Comment, (comment) => comment.user)
-  comment?: Comment[];
+  comments?: Comment[];
 }

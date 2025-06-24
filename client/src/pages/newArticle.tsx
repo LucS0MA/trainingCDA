@@ -1,27 +1,26 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { HeadingDropdownMenu } from "../components/tiptap-ui/heading-dropdown-menu"
-import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
-import { StarterKit } from "@tiptap/starter-kit"
-import { Image } from "@tiptap/extension-image"
-import { ImageUploadButton } from "../components/tiptap-ui/image-upload-button"
-import { ImageUploadNode } from "../components/tiptap-node/image-upload-node"
-import { handleImageUpload, MAX_FILE_SIZE } from "../lib/tiptap-utils"
-import { blogApi } from "../lib/api"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { HeadingDropdownMenu } from "../components/tiptap-ui/heading-dropdown-menu";
+import { EditorContent, EditorContext, useEditor } from "@tiptap/react";
+import { StarterKit } from "@tiptap/starter-kit";
+import { Image } from "@tiptap/extension-image";
+import { ImageUploadButton } from "../components/tiptap-ui/image-upload-button";
+import { ImageUploadNode } from "../components/tiptap-node/image-upload-node";
+import { handleImageUpload, MAX_FILE_SIZE } from "../lib/tiptap-utils";
+import { blogApi } from "../lib/api";
 
-
-import "../components/tiptap-node/paragraph-node/paragraph-node.scss"
-import { useAuth } from "../hooks/useAuth"
+import "../components/tiptap-node/paragraph-node/paragraph-node.scss";
+import { useAuth } from "../hooks/useAuth";
 
 export default function NewArticlePage() {
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const { user } = useAuth();
 
-  console.log(user?.id)
-  const navigate = useNavigate()
+  console.log(user?.id);
+  const navigate = useNavigate();
 
   const editor = useEditor({
     extensions: [
@@ -36,32 +35,32 @@ export default function NewArticlePage() {
       }),
     ],
     content: ``,
-  })
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-    setLoading(true)
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
     if (!editor) {
-      setError("L'éditeur n'est pas prêt")
-      setLoading(false)
-      return
+      setError("L'éditeur n'est pas prêt");
+      setLoading(false);
+      return;
     }
 
-    const content = editor.getHTML()
+    const content = editor.getHTML();
 
     let userId = user?.id!;
 
     try {
-      await blogApi.createPost({title, description, content, userId})
-      navigate("/")
+      await blogApi.createPost({ title, description, content, userId });
+      navigate("/");
     } catch (error: any) {
-      setError(error.response?.data?.message || "Échec de la publication")
+      setError(error.response?.data?.message || "Échec de la publication");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <EditorContext.Provider value={{ editor }}>
@@ -101,11 +100,7 @@ export default function NewArticlePage() {
             <EditorContent editor={editor} />
           </div>
 
-          {error && (
-            <div className="text-red-600 text-sm">
-              {error}
-            </div>
-          )}
+          {error && <div className="text-red-600 text-sm">{error}</div>}
 
           <button
             type="submit"
@@ -117,5 +112,5 @@ export default function NewArticlePage() {
         </form>
       </div>
     </EditorContext.Provider>
-  )
+  );
 }

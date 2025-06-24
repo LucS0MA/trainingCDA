@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL;
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -45,10 +44,18 @@ export const blogApi = {
     userId: number;
   }) => api.post("/posts", postData),
 
+  createComment: (commentData: {
+    content: string;
+    userId: number;
+    postId: number;
+  }) => api.post("/comments", commentData),
+
   updatePost: (
     id: string,
     postData: Partial<{ title: string; content: string; description: string }>,
   ) => api.put(`/posts/${id}`, postData),
 
   deletePost: (id: string) => api.delete(`/posts/${id}`),
+
+  deleteComment: (id: number) => api.delete(`/comments/${id}`),
 };

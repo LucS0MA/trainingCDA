@@ -5,7 +5,10 @@ const router = Router();
 
 export const browse = async (_req: Request, res: Response) => {
   try {
-    const comments = await Comment.find();
+    const comments = await Comment.find({
+          relations: ['user', "post"],
+          order: { createdAt: 'DESC' } 
+        });
     res.status(200).json(comments);
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -16,7 +19,7 @@ export const browse = async (_req: Request, res: Response) => {
 export const getById = async (req: Request, res: Response) => {
   try {
     const comment = await Comment.findOne({
-      where: { id: parseInt(req.params.id) },
+      where: { id: parseInt(req.params.id) }, relations: ["user", "post"],
     });
     res.status(200).json(comment);
   } catch (error) {
@@ -38,7 +41,10 @@ export const send = async (req: Request, res: Response) => {
   try {
     console.log("request body", req.body);
     const newComment = new Comment();
-    (newComment.content = req.body.content), newComment.save();
+    newComment.content = req.body.content,
+    newComment.user = req.body.userId,
+    newComment.post = req.body.postId,
+    await newComment.save();
     res.status(200).json({ message: `Comment ${newComment} created` });
   } catch (error) {
     res.status(404).json({ message: "no comment created" });
