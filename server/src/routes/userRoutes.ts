@@ -15,7 +15,11 @@ userRouter.post(
   validateData(userRegistrationSchema),
   userController.register,
 );
-userRouter.post("/auth/login", validateData(userLoginSchema), userController.login);
+userRouter.post(
+  "/auth/login",
+  validateData(userLoginSchema),
+  userController.login,
+);
 userRouter.get("/auth/logout", auth, userController.logout);
 userRouter.get("/auth/me", auth, userController.isAuth);
 

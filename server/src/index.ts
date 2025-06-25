@@ -12,21 +12,19 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 export const app = express();
 
-
 const allowedOrigins = ["http://localhost:5173"];
 
 const options: cors.CorsOptions = {
   origin: allowedOrigins,
   credentials: true,
-  methods: ["POST", "GET", "PUT", "DELETE"]
+  methods: ["POST", "GET", "PUT", "DELETE"],
 };
 
 app.use(cors(options));
-  
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.json());
-
 
 app.use("/api", userRouter);
 app.use("/api", postRouter);
@@ -39,6 +37,6 @@ app.get("/", (_req: Request, res: Response) => {
 export const initializeDatabase = async () => {
   if (!dataSourceBlogDB.isInitialized) {
     await dataSourceBlogDB.initialize();
-    console.log('Base de données initialisée');
+    console.log("Base de données initialisée");
   }
 };

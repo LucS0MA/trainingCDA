@@ -62,7 +62,10 @@ export default function NewComment({ postId }: { postId: number | undefined }) {
         )}
       </div>
 
-      <Button type="submit" className="flex items-center gap-2 bg-sage hover:bg-sage/90 text-white">
+      <Button
+        type="submit"
+        className="flex items-center gap-2 bg-sage hover:bg-sage/90 text-white"
+      >
         <Send className="w-4 h-4" />
         Submit
       </Button>

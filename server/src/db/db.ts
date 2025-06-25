@@ -4,7 +4,7 @@ import { User } from "../entity/Users";
 import { DataSource } from "typeorm";
 import * as dotenv from "dotenv";
 
-dotenv.config(); 
+dotenv.config();
 const dbPath = process.env.DB_PATH || "../dbDocker/blog_db.sqlite";
 
 export const dataSourceBlogDB = new DataSource({

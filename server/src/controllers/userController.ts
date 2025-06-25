@@ -15,7 +15,7 @@ export const browse = async (_req: Request, res: Response) => {
 
 export const getById = async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id)
+    const id = parseInt(req.params.id);
     if (isNaN(id)) {
       res.status(400).json({ message: "ID not valid" });
     }
@@ -58,7 +58,13 @@ export const register = async (req: Request, res: Response) => {
 };
 
 export const isAuth = async (req: Request, res: Response) => {
-  res.status(200).json({ id: (req as any).userId, username: (req as any).userName, email: (req as any).userEmail });
+  res
+    .status(200)
+    .json({
+      id: (req as any).userId,
+      username: (req as any).userName,
+      email: (req as any).userEmail,
+    });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -89,7 +95,8 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = async (_req: Request, res: Response) => {
   try {
-    res.clearCookie("access_token", {
+    res
+      .clearCookie("access_token", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
       })

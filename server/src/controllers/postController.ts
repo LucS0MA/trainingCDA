@@ -5,9 +5,9 @@ const router = Router();
 
 export const browse = async (_req: Request, res: Response) => {
   try {
-        const posts = await Post.find({
-      relations: ['user'],
-      order: { createdAt: 'DESC' } 
+    const posts = await Post.find({
+      relations: ["user"],
+      order: { createdAt: "DESC" },
     });
     res.status(200).json(posts);
   } catch (error) {
@@ -18,7 +18,10 @@ export const browse = async (_req: Request, res: Response) => {
 
 export const getById = async (req: Request, res: Response) => {
   try {
-    const post = await Post.findOne({ where: { id: parseInt(req.params.id) }, relations: ["user", "comments", "comments.user"] });
+    const post = await Post.findOne({
+      where: { id: parseInt(req.params.id) },
+      relations: ["user", "comments", "comments.user"],
+    });
     res.status(200).json(post);
   } catch (error) {
     console.error("Error fetching post:", error);
@@ -39,10 +42,10 @@ export const send = async (req: Request, res: Response) => {
   try {
     console.log("request body", req.body);
     const newPost = new Post();
-    newPost.title = req.body.title,
-      newPost.description = req.body.description,
-      newPost.content = req.body.content,
-      newPost.user = req.body.userId,
+    (newPost.title = req.body.title),
+      (newPost.description = req.body.description),
+      (newPost.content = req.body.content),
+      (newPost.user = req.body.userId),
       await newPost.save();
     res.status(200).json({ message: `Post ${newPost.title} created` });
   } catch (error) {

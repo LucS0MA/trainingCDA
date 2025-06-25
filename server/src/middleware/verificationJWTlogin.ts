@@ -6,7 +6,7 @@ export const auth = (req: Request, res: Response, next: NextFunction): void => {
 
   if (!token) {
     res.status(403).json({ message: "Access denied. No token provided." });
-    return; 
+    return;
   }
 
   try {
@@ -23,6 +23,6 @@ export const auth = (req: Request, res: Response, next: NextFunction): void => {
     return next();
   } catch (error) {
     res.status(403).json({ message: "Invalid or expired token." });
-    return; 
+    return;
   }
 };

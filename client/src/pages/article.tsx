@@ -39,15 +39,15 @@ export default function ArticlePage() {
   };
 
   const handleDeleteCom = async (commentId: number) => {
-      try {
-        console.log(commentId)
-        await blogApi.deleteComment(commentId);
-        window.location.reload();
-      } catch (error: any) {
-        setError(error.response?.data?.message || "Échec de la publication");
-      } finally {
-        setLoading(false);
-      }
+    try {
+      console.log(commentId);
+      await blogApi.deleteComment(commentId);
+      window.location.reload();
+    } catch (error: any) {
+      setError(error.response?.data?.message || "Échec de la publication");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const postId = post?.id;
