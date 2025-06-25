@@ -3,11 +3,11 @@ services:
     build: ./server
     volumes:
       - ./server/src:/app/src
-      - ./server/src/dbDocker:/app/dbDocker
+      - ./server/src/dbDocker:/app/src/dbDocker
     environment:
       - CHOKIDAR_USEPOLLING=true
       - NODE_ENV=development
-      - DB_PATH=/app/dbDocker/blog_db.sqlite
+      - DB_PATH=/app/src/dbDocker/blog_db.sqlite
     healthcheck:
         test: "curl --fail http://localhost:8080/api/posts || exit 1"
         interval: 10s  

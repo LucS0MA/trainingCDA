@@ -1,6 +1,5 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { blogApi } from "../lib/api";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { Send } from "lucide-react";
 import { Button } from "./ui/button";
@@ -12,7 +11,6 @@ type commentInputs = {
 };
 
 export default function NewComment({ postId }: { postId: number | undefined }) {
-  const navigate = useNavigate();
   const {
     register: registerComment,
     handleSubmit: handleCommentSubmit,
@@ -31,7 +29,7 @@ export default function NewComment({ postId }: { postId: number | undefined }) {
         userId: user.id,
         postId: postId,
       });
-      navigate(`/article/${postId}`);
+      window.location.reload();
     } catch (error: any) {
       console.error("Error submitting comment:", error);
     }

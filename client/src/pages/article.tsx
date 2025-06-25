@@ -42,6 +42,7 @@ export default function ArticlePage() {
       try {
         console.log(commentId)
         await blogApi.deleteComment(commentId);
+        window.location.reload();
       } catch (error: any) {
         setError(error.response?.data?.message || "Échec de la publication");
       } finally {
