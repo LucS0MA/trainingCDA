@@ -11,11 +11,14 @@ import {
 import { CalendarDays, User, ArrowRight, BookOpen } from "lucide-react";
 import type { Post } from "../types/blog";
 import { blogApi } from "../lib/api";
+import { useAuth } from "../hooks/useAuth";
 
 export default function HomePage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     setMounted(true);
@@ -61,15 +64,15 @@ export default function HomePage() {
                 mounted ? "animate-fade-in-down" : "opacity-0"
               }`}
             >
-              Welcome to <span className="text-sage">BlogCraft</span>
+              Welcome to <span className="text-sage">WebCraft</span>
             </h1>
             <p
               className={`text-xl md:text-2xl text-anthracite/70 mb-8 max-w-3xl mx-auto leading-relaxed ${
                 mounted ? "animate-fade-in-up" : "opacity-0"
               }`}
             >
-              Discover stories, insights, and ideas from writers around the
-              world. Join our community of passionate storytellers.
+              Discover articles about the web developement sphere, insights, ideas and tutorials from developpers around the
+              world. Join our community of passionate web developpers.
             </p>
             <div
               className={`flex flex-col sm:flex-row gap-4 justify-center ${
@@ -77,6 +80,7 @@ export default function HomePage() {
               }`}
               style={{ animationDelay: "0.3s" }}
             >
+              <Link to={`http://localhost:7000/article/1`}>
               <Button
                 size="lg"
                 className="bg-sage hover:bg-sage/90 text-white px-8 py-3 text-lg"
@@ -84,13 +88,14 @@ export default function HomePage() {
                 <BookOpen className="mr-2 h-5 w-5" />
                 Start Reading
               </Button>
-              <Button
+              </Link>
+              {/* <Button
                 variant="outline"
                 size="lg"
                 className="border-sage text-sage hover:bg-sage hover:text-white px-8 py-3 text-lg"
               >
                 Learn More
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>
@@ -111,7 +116,7 @@ export default function HomePage() {
               Latest Stories
             </h2>
             <p className="text-xl text-anthracite/70 max-w-2xl mx-auto">
-              Explore our most recent articles and discover new perspectives
+              Explore our most recent articles, tutorials and researches
             </p>
           </div>
 
@@ -202,13 +207,13 @@ export default function HomePage() {
             style={{ animationDelay: "1s" }}
           >
             <h2 className="font-playfair text-3xl md:text-4xl font-bold text-anthracite mb-4">
-              Ready to Share Your Story?
+              Ready to Share Your Knowledge?
             </h2>
             <p className="text-xl text-anthracite/70 mb-8">
-              Join our community of writers and start crafting your narrative
-              today.
+              Join our community of web devs and start helping developpers in need !
             </p>
-            <Link to="/register">
+            {user ? (
+              <Link to="/NewArticle">
               <Button
                 size="lg"
                 className="bg-sage hover:bg-sage/90 text-white px-8 py-3 text-lg"
@@ -217,6 +222,17 @@ export default function HomePage() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
+            ) : (
+              <Link to="/register">
+              <Button
+                size="lg"
+                className="bg-sage hover:bg-sage/90 text-white px-8 py-3 text-lg"
+              >
+                Get Started
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            )}
           </div>
         </div>
       </section>

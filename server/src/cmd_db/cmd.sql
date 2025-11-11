@@ -1,6 +1,6 @@
 -- 1) Deleting existing data
 DELETE FROM comment;
-DELETE FROM post WHERE id = 7;
+DELETE FROM post;
 DELETE FROM user;
 
 -- Optional: reset sequences (for SQLite you can TRUNCATE sqlite_sequence if needed)
@@ -14,16 +14,45 @@ INSERT INTO user (id, username, password, email, createdAt, updatedAt) VALUES
 (4, 'david', 'argon2id$placeholder$4', 'david@example.com', '2025-09-25 09:06:00', '2025-09-25 09:06:00'),
 (5, 'elodie', 'argon2id$placeholder$5', 'elodie@example.com', '2025-09-25 09:08:00', '2025-09-25 09:08:00');
 
--- 3) Reinserting posts (articles)
+-- 3) Reinserting posts (articles) with illustrative images
 INSERT INTO post (id, title, description, content, createdAt, updatedAt, userId) VALUES
-(1, 'How to secure your passwords in 2025', 'Best practices for storing and verifying passwords', '<p>Password security remains critical. Use slow hashing functions (argon2id, bcrypt) and unique salts per user. Enable 2FA whenever possible.</p>', '2025-09-20 10:15:00', '2025-09-20 10:15:00', 2),
-(2, 'Introduction to SQL indexes: speeding up your queries', 'A practical guide to understanding and creating useful indexes', '<p>Indexes reduce read times but increase write costs. Here’s when and how to create a covering index.</p>', '2025-08-30 14:40:00', '2025-08-30 14:40:00', 3),
-(3, 'The future of the web: front-end trends for 2026', 'Frameworks, performance, and accessibility', '<p>Performance-first, edge computing, and standardized web components: what to expect for 2026?</p>', '2025-09-01 09:00:00', '2025-09-01 09:00:00', 1),
-(4, 'Practical guide: continuous deployment with CI/CD', 'Automating releases securely', '<p>Example pipeline: lint -> unit tests -> build -> integration tests -> canary deployment.</p>', '2025-07-12 11:20:00', '2025-07-12 11:20:00', 4),
-(5, 'Best practices for web accessibility (WCAG)', 'Making your site usable by everyone', '<p>Use explicit labels, a proper heading hierarchy, and test with both keyboard and screen readers.</p>', '2025-06-18 16:05:00', '2025-06-18 16:05:00', 5),
-(6, 'How to write effective unit tests', 'Strategies for maintainable tests', '<p>Favor fast, independent, and easily repeatable tests. Mock external dependencies and check behaviors, not implementations.</p>', '2025-09-10 08:30:00', '2025-09-10 08:30:00', 2);
+(1, 'How to secure your passwords in 2025',
+'Best practices for storing and verifying passwords',
+'<p>Password security remains critical. Use slow hashing functions (argon2id, bcrypt) and unique salts per user. Enable 2FA whenever possible.</p>
+<img src="/uploads/security_passwords.jpg" alt="Password security" title="Password security tips">',
+'2025-09-20 10:15:00', '2025-09-20 10:15:00', 2),
 
--- 4) Reinserting credible comments
+(2, 'Introduction to SQL indexes: speeding up your queries',
+'A practical guide to understanding and creating useful indexes',
+'<p>Indexes reduce read times but increase write costs. Here’s when and how to create a covering index.</p>
+<img src="/uploads/sql_indexes.jpg" alt="SQL indexes" title="SQL indexing example">',
+'2025-08-30 14:40:00', '2025-08-30 14:40:00', 3),
+
+(3, 'The future of the web: front-end trends for 2026',
+'Frameworks, performance, and accessibility',
+'<p>Performance-first, edge computing, and standardized web components: what to expect for 2026?</p>
+<img src="/uploads/frontend_trends.jpg" alt="Front-end trends" title="Front-end evolution 2026">',
+'2025-09-01 09:00:00', '2025-09-01 09:00:00', 1),
+
+(4, 'Practical guide: continuous deployment with CI/CD',
+'Automating releases securely',
+'<p>Example pipeline: lint → unit tests → build → integration tests → canary deployment.</p>
+<img src="/uploads/cicd_pipeline.png" alt="CI/CD pipeline" title="Continuous Deployment Pipeline">',
+'2025-07-12 11:20:00', '2025-07-12 11:20:00', 4),
+
+(5, 'Best practices for web accessibility (WCAG)',
+'Making your site usable by everyone',
+'<p>Use explicit labels, a proper heading hierarchy, and test with both keyboard and screen readers.</p>
+<img src="/uploads/web_accessibility.png" alt="Accessibility" title="Web accessibility best practices">',
+'2025-06-18 16:05:00', '2025-06-18 16:05:00', 5),
+
+(6, 'How to write effective unit tests',
+'Strategies for maintainable tests',
+'<p>Favor fast, independent, and easily repeatable tests. Mock external dependencies and check behaviors, not implementations.</p>
+<img src="/uploads/unit_tests.png" alt="Unit testing" title="Effective unit testing strategies">',
+'2025-09-10 08:30:00', '2025-09-10 08:30:00', 2);
+
+-- 4) Reinserting credible comments (unchanged)
 INSERT INTO comment (id, content, createdAt, updatedAt, userId, postId) VALUES
 (1, 'Great article, I implemented argon2id and reduced risks — thanks!', '2025-09-21 12:10:00', '2025-09-21 12:10:00', 1, 1),
 (2, 'One important point: also consider password rotation policies.', '2025-09-21 13:05:00', '2025-09-21 13:05:00', 3, 1),

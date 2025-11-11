@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link to="/" className="flex items-center space-x-2">
               <PenTool className="h-8 w-8 text-sage" />
               <span className="font-playfair text-2xl font-bold text-anthracite">
-                BlogCraft
+                WebCraft
               </span>
             </Link>
 
@@ -120,7 +120,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <p className="text-anthracite/60 text-sm">
-              © 2024 BlogCraft. Crafted with ❤️ for writers and readers.
+              © 2024 WebCraft. Crafted with ❤️ for developpers.
             </p>
           </div>
         </div>
