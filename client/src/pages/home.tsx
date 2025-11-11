@@ -34,6 +34,15 @@ export default function HomePage() {
     }
   };
 
+  function extractFirstImageSrcFromHtml(html: string): string | null {
+    if (!html) return null;
+    const match = html.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/i);
+    return match ? match[1] : null;
+  }
+
+  const thumb = (post: Post): string | null =>
+    extractFirstImageSrcFromHtml(post.content);
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -63,7 +72,9 @@ export default function HomePage() {
               world. Join our community of passionate storytellers.
             </p>
             <div
-              className={`flex flex-col sm:flex-row gap-4 justify-center ${mounted ? "animate-fade-in" : "opacity-0"}`}
+              className={`flex flex-col sm:flex-row gap-4 justify-center ${
+                mounted ? "animate-fade-in" : "opacity-0"
+              }`}
               style={{ animationDelay: "0.3s" }}
             >
               <Button
@@ -91,7 +102,9 @@ export default function HomePage() {
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
-            className={`text-center mb-12 ${mounted ? "animate-slide-in-left" : "opacity-0"}`}
+            className={`text-center mb-12 ${
+              mounted ? "animate-slide-in-left" : "opacity-0"
+            }`}
             style={{ animationDelay: "0.5s" }}
           >
             <h2 className="font-playfair text-4xl md:text-5xl font-bold text-anthracite mb-4">
@@ -130,6 +143,13 @@ export default function HomePage() {
                   }`}
                   style={{ animationDelay: `${0.7 + index * 0.1}s` }}
                 >
+                  {thumb(post) && (
+                    <img
+                      src={thumb(post) as string}
+                      alt={post.title}
+                      className="w-full h-40 object-cover rounded-t-lg"
+                    />
+                  )}
                   <CardHeader>
                     <CardTitle className="font-playfair text-xl group-hover:text-sage transition-colors">
                       {post.title}

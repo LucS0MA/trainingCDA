@@ -139,10 +139,7 @@ export const handleImageUpload = async (
   onProgress?: (event: { progress: number }) => void,
   abortSignal?: AbortSignal,
 ): Promise<string> => {
-  // Validate file
-  if (!file) {
-    throw new Error("No file provided");
-  }
+  if (!file) throw new Error("No file provided");
 
   if (file.size > MAX_FILE_SIZE) {
     throw new Error(
@@ -150,19 +147,47 @@ export const handleImageUpload = async (
     );
   }
 
-  // For demo/testing: Simulate upload progress
-  for (let progress = 0; progress <= 100; progress += 10) {
-    if (abortSignal?.aborted) {
-      throw new Error("Upload cancelled");
+  const formData = new FormData();
+  formData.append("file", file);
+
+  // Use XMLHttpRequest for progress tracking (fetch doesn't provide progress natively)
+  return await new Promise<string>((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "/api/uploads", true);
+
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const progress = Math.round((event.loaded / event.total) * 100);
+        onProgress?.({ progress });
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try {
+          const response = JSON.parse(xhr.responseText);
+          // Expecting { url: "/uploads/filename.png" }
+          resolve(response.url);
+        } catch (error) {
+          reject(new Error("Invalid JSON response from server"));
+        }
+      } else {
+        reject(new Error(`Upload failed with status ${xhr.status}`));
+      }
+    };
+
+    xhr.onerror = () => reject(new Error("Upload failed due to network error"));
+
+    if (abortSignal) {
+      abortSignal.addEventListener("abort", () => {
+        xhr.abort();
+        reject(new Error("Upload cancelled"));
+      });
     }
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    onProgress?.({ progress });
-  }
 
-  return "/images/placeholder-image.png";
-
-  // Uncomment for production use:
-  // return convertFileToBase64(file, abortSignal);
+    xhr.send(formData);
+  });
 };
 
 /**

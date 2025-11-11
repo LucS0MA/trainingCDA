@@ -16,6 +16,7 @@ export interface Post {
   user: User;
   userId?: number;
   createdAt: string;
+  images:string[];
   updatedAt: string;
   comments: Comment;
 }

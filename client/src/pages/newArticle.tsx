@@ -52,6 +52,8 @@ export default function NewArticlePage() {
 
     let userId = user?.id!;
 
+    console.log(content)
+
     try {
       await blogApi.createPost({ title, description, content, userId });
       navigate("/");

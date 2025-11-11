@@ -24,6 +24,9 @@ export class Post extends BaseEntity {
   @Column({ type: "varchar" })
   content: string;
 
+  @Column("simple-json", { nullable: true })
+  images?: string[];
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -40,15 +40,16 @@ export const remove = async (req: Request, res: Response) => {
 
 export const send = async (req: Request, res: Response) => {
   try {
-    console.log("request body", req.body);
     const newPost = new Post();
-    (newPost.title = req.body.title),
-      (newPost.description = req.body.description),
-      (newPost.content = req.body.content),
-      (newPost.user = req.body.userId),
-      await newPost.save();
+    newPost.title = req.body.title;
+    newPost.description = req.body.description;
+    newPost.content = req.body.content;
+    newPost.user = req.body.userId;
+    newPost.images = req.body.images || []; 
+    await newPost.save();
     res.status(200).json({ message: `Post ${newPost.title} created` });
   } catch (error) {
+    console.error(error);
     res.status(400).json({ message: "Failed to create post" });
   }
 };
