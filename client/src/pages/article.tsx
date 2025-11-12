@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { CalendarDays, ArrowLeft, Clock, User, Trash2 } from "lucide-react";
@@ -13,10 +13,12 @@ import { useAuth } from "../hooks/useAuth";
 
 export default function ArticlePage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState<Array<Comment> | null>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -35,6 +37,25 @@ export default function ArticlePage() {
       setError(error.response?.data?.message || "Failed to load article");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeletePost = async () => {
+    if (!post?.id) return;
+    
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this article? This action cannot be undone."
+    );
+    
+    if (!confirmDelete) return;
+
+    try {
+      setIsDeleting(true);
+      await blogApi.deletePost(post.id.toString());
+      navigate("/");
+    } catch (error: any) {
+      setError(error.response?.data?.message || "Failed to delete article");
+      setIsDeleting(false);
     }
   };
 
@@ -114,18 +135,30 @@ export default function ArticlePage() {
     <div className="min-h-screen bg-stone">
       <article className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Back button */}
-          <Link to="/" className="inline-block mb-8">
-            <Button
-              variant="ghost"
-              className="text-sage hover:text-sage/80 hover:bg-sage/10 p-0 h-auto"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Articles
-            </Button>
-          </Link>
+          <div className="flex items-center justify-between mb-8">
+            <Link to="/">
+              <Button
+                variant="ghost"
+                className="text-sage hover:text-sage/80 hover:bg-sage/10 p-0 h-auto"
+              >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Articles
+              </Button>
+            </Link>
 
-          {/* Article header */}
+            {user?.id === post.user.id && (
+              <Button
+                variant="outline"
+                className="border-red-200 text-red-600 hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors"
+                onClick={handleDeletePost}
+                disabled={isDeleting}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                {isDeleting ? "Deleting..." : "Delete Article"}
+              </Button>
+            )}
+          </div>
+
           <header className="mb-8 animate-fade-in-down">
             <h1 className="font-playfair text-4xl md:text-5xl font-bold text-anthracite mb-6 leading-tight">
               {post.title}
@@ -147,7 +180,6 @@ export default function ArticlePage() {
             </div>
           </header>
 
-          {/* Article content */}
           <Card className="bg-white/80 backdrop-blur-sm border-sage/20 animate-fade-in-up">
             <CardContent className="p-8 md:p-12">
               <div
@@ -159,7 +191,6 @@ export default function ArticlePage() {
             </CardContent>
           </Card>
 
-          {/* Article footer */}
           <footer className="mt-12 pt-8 border-t border-sage/20 animate-fade-in">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -183,7 +214,6 @@ export default function ArticlePage() {
               </Link>
             </div>
           </footer>
-          {/* Article comments */}
 
           {comments?.length === 0 ? (
             <h2 className="font-playfair text-2xl md:text-2xl font-bold text-anthracite mb-6 leading-tight mt-20">
@@ -218,7 +248,6 @@ export default function ArticlePage() {
                     </div>
                   </div>
 
-                  {/* Bouton de suppression aligné à droite */}
                   {el.user.id === user?.id && (
                     <Button
                       variant="outline"

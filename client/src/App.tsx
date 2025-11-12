@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./hooks/useAuth";
 import Layout from "./components/layout";
+import ProtectedRoute from "./components/protectedRoute";
 import HomePage from "./pages/home";
 import ArticlePage from "./pages/article";
 import LoginPage from "./pages/login";
@@ -17,7 +18,14 @@ export default function App() {
             <Route path="/article/:id" element={<ArticlePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/newArticle" element={<NewArticlePage />} />
+            <Route
+              path="/newArticle"
+              element={
+                <ProtectedRoute>
+                  <NewArticlePage />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </Layout>
       </Router>
